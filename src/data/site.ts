@@ -116,7 +116,7 @@ export const waLink = (message: string) =>
 export const LINKS = {
   menu: import.meta.env.VITE_MENU_URL || "https://menu.systimes.com.ar/?Filipo=1",
   instagram: import.meta.env.VITE_INSTAGRAM_URL || "https://www.instagram.com/filipocaferesto",
-  facebook: import.meta.env.VITE_FACEBOOK_URL || "https://www.facebook.com/filipocaferesto",
+  facebook: import.meta.env.VITE_FACEBOOK_URL || "https://www.facebook.com/share/1DgGo4EJBx/?mibextid=wwXIfr",
   whatsapp: waLink(WA_MESSAGES.consulta),
   peyaTablas:
     import.meta.env.VITE_PEYA_TABLAS_URL ||

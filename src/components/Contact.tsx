@@ -53,7 +53,7 @@ const INFO: InfoRow[] = [
   {
     icon: FacebookIcon,
     label: "Facebook",
-    value: "/filipocaferesto",
+    value: "Filipo Café Resto Bar",
     href: LINKS.facebook,
   },
 ];
