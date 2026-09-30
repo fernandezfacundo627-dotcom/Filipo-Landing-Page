@@ -1,0 +1,310 @@
+@import "tailwindcss";
+
+/* ══════════════════════════════════════════════
+   FILIPO · Sistema de diseño
+   Negro profundo · Dorado ámbar · Crema marfil
+   ══════════════════════════════════════════════ */
+
+@theme {
+  --color-ink: #161212;
+  --color-coal: #100c0c;
+  --color-smoke: #332727;
+  --color-graphite: #221b1b;
+  --color-gold: #dd7c34;
+  --color-gold-light: #f29d5c;
+  --color-gold-dark: #c16e33;
+  --color-cream: #f5f0e8;
+  --color-peya: #fa0050;
+  --color-peya-dark: #d60043;
+  --color-wa: #25d366;
+  --color-mint: #48d1ba;
+  --color-mint-light: #72e2d0;
+  --color-mint-dark: #2cb39d;
+
+  --font-display: "Playfair Display", "Georgia", serif;
+  --font-elegant: "Cormorant Garamond", "Georgia", serif;
+  --font-body: "Lato", "Helvetica Neue", Arial, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 88px;
+  }
+  body {
+    @apply bg-ink text-cream font-body antialiased overflow-x-hidden;
+  }
+  ::selection {
+    background: #dd7c34;
+    color: #161212;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #100c0c;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #332727;
+    border-radius: 8px;
+    border: 2px solid #100c0c;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #dd7c34;
+  }
+  img {
+    @apply select-none;
+  }
+}
+
+@layer components {
+  /* Etiqueta superior de secciones */
+  .eyebrow {
+    @apply inline-flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.35em];
+  }
+
+  /* Línea dorada decorativa */
+  .hairline {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(221, 124, 52, 0.55), transparent);
+  }
+
+  /* Texto con degradado dorado */
+  .text-gold-grad {
+    background: linear-gradient(115deg, #f29d5c 10%, #dd7c34 45%, #c16e33 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Filtro cálido uniforme para fotografía */
+  .img-warm {
+    filter: sepia(0.22) saturate(0.92) contrast(1.04) brightness(0.88);
+  }
+
+  /* Patrón sutil de puntos dorados */
+  .pattern-dots {
+    background-image: radial-gradient(rgba(200, 164, 90, 0.08) 1px, transparent 1.4px);
+    background-size: 26px 26px;
+  }
+
+  /* Links de la navbar */
+  .nav-link {
+    @apply relative text-[11px] font-bold uppercase tracking-[0.25em] text-cream/70 transition-colors duration-300 hover:text-gold;
+  }
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -7px;
+    height: 1px;
+    width: 0;
+    background: #c8a45a;
+    transition: width 0.3s ease;
+  }
+  .nav-link:hover::after {
+    width: 100%;
+  }
+
+  /* Mapa en modo oscuro */
+  .map-dark iframe {
+    filter: invert(0.9) hue-rotate(190deg) saturate(0.32) brightness(0.92) contrast(0.92);
+  }
+}
+
+/* ═══════════ Animaciones ═══════════ */
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Entrada del hero */
+@keyframes heroUp {
+  from {
+    opacity: 0;
+    transform: translateY(36px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* Animaciones de entrada al sitio (IntroLoader) */
+@keyframes introLine {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+@keyframes introFadeScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+.intro-line {
+  animation: introLine 1.3s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+.intro-fade-scale {
+  animation: introFadeScale 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.hero-in {
+  opacity: 0;
+}
+.hero-ready .hero-in {
+  animation: heroUp 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--d, 0ms);
+}
+
+/* Cinta marquee */
+@keyframes marqueeX {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marqueeX 32s linear infinite;
+}
+
+/* Pulso del botón WhatsApp */
+@keyframes ringPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+.wa-pulse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: #25d366;
+  animation: ringPulse 2.4s ease-out infinite;
+  z-index: -1;
+}
+
+/* Indicador de scroll */
+@keyframes floatY {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(9px);
+  }
+}
+.scroll-cue {
+  animation: floatY 2.2s ease-in-out infinite;
+}
+
+/* Cartel y Baliza de "Abierto Ahora" */
+@keyframes liveBadgeGlow {
+  0%, 100% {
+    box-shadow: 0 0 14px -2px rgba(72, 209, 186, 0.22), inset 0 0 8px -2px rgba(72, 209, 186, 0.12);
+    border-color: rgba(72, 209, 186, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 26px 3px rgba(72, 209, 186, 0.6), inset 0 0 12px 1px rgba(72, 209, 186, 0.28);
+    border-color: rgba(72, 209, 186, 0.85);
+  }
+}
+@keyframes liveBeaconPing {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.95;
+  }
+  70% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+.live-badge-pulse {
+  animation: liveBadgeGlow 2.4s ease-in-out infinite;
+}
+.live-beacon-wave {
+  animation: liveBeaconPing 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* Modal */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.backdrop-in {
+  animation: fadeIn 0.3s ease both;
+}
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(22px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.modal-in {
+  animation: modalIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Grano cinematográfico global */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Accesibilidad: movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .hero-in,
+  .marquee-track,
+  .wa-pulse::after,
+  .scroll-cue,
+  .live-badge-pulse,
+  .live-beacon-wave,
+  .modal-in,
+  .backdrop-in {
+    animation: none;
+    opacity: 1;
+  }
+}
