@@ -47,7 +47,7 @@ Thumbs.db
 desktop.ini
 
 # Temporary files and caches
-.cache/
-*.tmp
-*.temp
-Galeria/
+# Root temporary gallery folder
+/Galeria/
+!src/assets/galeria/
+
