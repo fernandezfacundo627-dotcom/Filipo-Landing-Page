@@ -35,7 +35,17 @@ const OCCASION_OPTIONS = [
   "Mesa cerca de libros 📖",
 ];
 
+const getLocalDateString = (daysOffset: number) => {
+  const d = new Date();
+  d.setDate(d.getDate() + daysOffset);
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+};
+
 export default function ReservationModal({ open, onClose }: ReservationModalProps) {
+  // Declaración de todos los Hooks al nivel superior (sin retornos condicionales antes)
   const [diners, setDiners] = useState("3-4 personas");
   const [day, setDay] = useState("Hoy");
   const [customDate, setCustomDate] = useState("");
@@ -43,9 +53,13 @@ export default function ReservationModal({ open, onClose }: ReservationModalProp
   const [occasion, setOccasion] = useState("Salida casual");
   const [name, setName] = useState("");
   const [note, setNote] = useState("");
+  const [isSending, setIsSending] = useState(false);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      setIsSending(false);
+      return;
+    }
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     document.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
@@ -55,34 +69,29 @@ export default function ReservationModal({ open, onClose }: ReservationModalProp
     };
   }, [open, onClose]);
 
+  // Si no está abierto, no renderiza nada
   if (!open) return null;
 
-  // Fecha mínima para "Otro día" en hora local (evita desfases UTC)
-  // Como "Hoy" y "Mañana" ya están cubiertos, el mínimo es pasado mañana
-  const getLocalDateString = (daysOffset: number) => {
-    const d = new Date();
-    d.setDate(d.getDate() + daysOffset);
-    const yyyy = d.getFullYear();
-    const mm = String(d.getMonth() + 1).padStart(2, "0");
-    const dd = String(d.getDate()).padStart(2, "0");
-    return `${yyyy}-${mm}-${dd}`;
-  };
-  const minDate = getLocalDateString(2); // pasado mañana en adelante
+  const minDate = getLocalDateString(2);
 
+  // Fecha con formato seguro
+  let formattedCustomDate = "Otro día (a coordinar)";
+  if (day === "Otro día" && customDate) {
+    try {
+      const parsed = new Date(customDate + "T00:00:00");
+      if (!isNaN(parsed.getTime())) {
+        formattedCustomDate = parsed.toLocaleDateString("es-AR", {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+        });
+      }
+    } catch {
+      formattedCustomDate = customDate;
+    }
+  }
 
-  // Fecha final: si eligió "Otro día" y completó el input, usa esa fecha; si no, pone "Otro día (a coordinar)"
-  const dateValue =
-    day === "Otro día"
-      ? customDate
-        ? new Date(customDate + "T00:00:00").toLocaleDateString("es-AR", {
-            weekday: "long",
-            day: "numeric",
-            month: "long",
-          })
-        : "Otro día (a coordinar)"
-      : day;
-
-  const [isSending, setIsSending] = useState(false);
+  const dateValue = day === "Otro día" ? formattedCustomDate : day;
 
   // Validación y sanitización
   const sanitizeText = (str: string) => str.replace(/[\u0000-\u001F\u007F-\u009F]/g, "").trim();
@@ -115,19 +124,19 @@ export default function ReservationModal({ open, onClose }: ReservationModalProp
     setTimeout(() => {
       setIsSending(false);
       onClose();
-    }, 350);
+    }, 400);
   };
 
   return (
     <div
-      className="backdrop-in fixed inset-0 z-[75] flex items-start justify-center overflow-y-auto bg-coal/85 px-4 py-8 backdrop-blur-md sm:py-12"
+      className="backdrop-in fixed inset-0 z-[110] flex items-start sm:items-center justify-center overflow-y-auto bg-coal/85 px-4 py-6 sm:py-10 backdrop-blur-md"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
       aria-labelledby="reservation-title"
     >
       <div
-        className="modal-in relative w-full max-w-xl rounded-3xl border border-gold/25 bg-graphite p-5 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.85)] sm:p-8"
+        className="modal-in relative w-full max-w-xl my-auto max-h-[92vh] overflow-y-auto rounded-3xl border border-gold/25 bg-graphite p-5 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.85)] sm:p-8"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Botón Cerrar */}
@@ -193,7 +202,10 @@ export default function ReservationModal({ open, onClose }: ReservationModalProp
                 <button
                   key={opt}
                   type="button"
-                  onClick={() => { setDay(opt); if (opt !== "Otro día") setCustomDate(""); }}
+                  onClick={() => {
+                    setDay(opt);
+                    if (opt !== "Otro día") setCustomDate("");
+                  }}
                   className={`cursor-pointer rounded-full px-3.5 py-2 text-xs font-semibold tracking-wide transition-all ${
                     day === opt
                       ? "border border-gold bg-gold text-ink shadow-[0_0_20px_-5px_rgba(221,124,52,0.5)]"
