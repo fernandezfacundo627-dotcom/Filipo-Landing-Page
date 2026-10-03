@@ -37,7 +37,7 @@ export default function Experience() {
       <div className="mx-auto max-w-7xl px-5 lg:px-10">
         <SectionHeading
           eyebrow="La experiencia Filipo"
-          title="¿Por qué los salteños eligen Filipo?"
+          title="¿Por qué las personas eligen Filipo?"
         />
 
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
