@@ -74,7 +74,7 @@ El proyecto soporta personalización mediante variables con prefijo `VITE_`:
 | Variable | Descripción | Valor por Defecto |
 | :--- | :--- | :--- |
 | `VITE_WA_NUMBER` | Teléfono internacional de WhatsApp | `5493874540704` |
-| `VITE_MENU_URL` | Enlace a la carta digital interactiva | `https://menu.systimes.com.ar/?Filipo=1` |
+| `VITE_MENU_URL` | Enlace a la carta digital interactiva | `https://menu.filipobardetablas.com.ar/` |
 | `VITE_INSTAGRAM_URL` | Perfil de Instagram oficial | `https://www.instagram.com/filipocaferesto` |
 | `VITE_FACEBOOK_URL` | Página de Facebook oficial | `https://www.facebook.com/share/1DgGo4EJBx/?mibextid=wwXIfr` |
 | `VITE_PEYA_TABLAS_URL` | URL de PedidosYa Bar de Tablas | Perfil oficial en PedidosYa |

@@ -114,7 +114,7 @@ export const waLink = (message: string) =>
   `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`;
 
 export const LINKS = {
-  menu: import.meta.env.VITE_MENU_URL || "https://menu.systimes.com.ar/?Filipo=1",
+  menu: import.meta.env.VITE_MENU_URL || "https://menu.filipobardetablas.com.ar/",
   instagram: import.meta.env.VITE_INSTAGRAM_URL || "https://www.instagram.com/filipocaferesto",
   facebook: import.meta.env.VITE_FACEBOOK_URL || "https://www.facebook.com/share/1DgGo4EJBx/?mibextid=wwXIfr",
   whatsapp: waLink(WA_MESSAGES.consulta),
